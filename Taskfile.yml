@@ -1,0 +1,56 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  CONTEXT: '{{.CONTEXT | default "kind-test-cluster"}}'
+
+tasks:
+  default:
+    cmds:
+      - task -l
+    silent: true
+
+  setup:
+    desc: "Setup kind cluster"
+    deps:
+      - requirements
+    cmds:
+      - task: kind-create-cluster
+      - task: kind-set-context
+
+  requirements:
+    preconditions:
+      # # - sh: "[ ! docker info > /dev/null 2>&1 ]"
+      # #   msg: "This script uses docker to install kind cluster, and it isn't running - please start docker (or colima) and try again!"
+      # - sh: "[ $ARTIFACTORY_USERNAME != '' ]"
+      #   msg: "You need to define ARTIFACTORY_USERNAME env variable"
+      # - sh: "[ $ARTIFACTORY_PASSWORD != '' ]"
+      #   msg: "You need to define ARTIFACTORY_PASSWORD env variable"
+      # - sh: "command -v bats"
+      #   msg: "Bats and bats libs needed, macos: https://github.com/bats-core/homebrew-bats-core, other: https://bats-core.readthedocs.io/en/stable/installation.html"
+      # - sh: "command -v envsubst"
+      #   msg: "You need envsubst, mac: brew install gettext, linux: apt/yum/xxx install gettext"
+    cmds:
+      - echo "All requirements met"
+
+  kind-create-cluster:
+    cmds:
+      - kind create cluster --config resources/kind-config.yaml
+    status:
+      - kind get clusters | grep -q kind-test-cluster
+
+  kind-set-context:
+    cmds:
+      - kubectl config use-context kind-test-cluster
+    status:
+      - kubectl config get-contexts | grep kind-test-cluster | grep "[*]"
+
+  clean:
+    desc: "Cleanup kind cluster"
+    cmds:
+    - task: kind-delete-cluster
+
+  kind-delete-cluster:
+    cmds:
+      - kind delete cluster --name kind-test-cluster
