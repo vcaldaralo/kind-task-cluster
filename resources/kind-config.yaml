@@ -4,17 +4,9 @@ name: test-cluster
 nodes:
 - role: control-plane
   image: kindest/node:v1.24.7@sha256:577c630ce8e509131eab1aea12c022190978dd2f745aac5eb1fe65c0807eb315
-# 3 nodes with topology: zone-a
+# 2 nodes with topology: zone-a
 # 1 nodes with topology: zone-b
 # 1 nodes with topology: zone-c
-- role: worker
-  image: kindest/node:v1.24.7@sha256:577c630ce8e509131eab1aea12c022190978dd2f745aac5eb1fe65c0807eb315
-  kubeadmConfigPatches:
-  - |
-    kind: JoinConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "topology.kubernetes.io/zone=zone-a"
 - role: worker
   image: kindest/node:v1.24.7@sha256:577c630ce8e509131eab1aea12c022190978dd2f745aac5eb1fe65c0807eb315
   kubeadmConfigPatches:
