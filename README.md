@@ -1,4 +1,4 @@
-# task-kind-cluster
+# kind-task-cluster
 Create/delete a k8s kind cluster using `task`
 
 Create the k8s kind cluster
