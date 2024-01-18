@@ -3,7 +3,7 @@
 version: '3'
 
 vars:
-  CONTEXT: '{{.CONTEXT | default "kind-test-cluster"}}'
+  CONTEXT: '{{.CONTEXT | default "kind-task-cluster"}}'
 
 tasks:
   default:
@@ -38,13 +38,13 @@ tasks:
     cmds:
       - kind create cluster --config resources/kind-config.yaml
     status:
-      - kind get clusters | grep -q kind-test-cluster
+      - kind get clusters | grep -q kind-task-cluster
 
   kind-set-context:
     cmds:
-      - kubectl config use-context kind-test-cluster
+      - kubectl config use-context kind-task-cluster
     status:
-      - kubectl config get-contexts | grep kind-test-cluster | grep "[*]"
+      - kubectl config get-contexts | grep kind-task-cluster | grep "[*]"
 
   clean:
     desc: "Cleanup kind cluster"
@@ -53,4 +53,4 @@ tasks:
 
   kind-delete-cluster:
     cmds:
-      - kind delete cluster --name kind-test-cluster
+      - kind delete cluster --name kind-task-cluster
