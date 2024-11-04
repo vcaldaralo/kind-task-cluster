@@ -36,15 +36,15 @@ tasks:
 
   kind-create-cluster:
     cmds:
-      - kind create cluster --config resources/kind-config.yaml
+      - kind create cluster --config resources/kind-config.yaml --name {{.CONTEXT}}
     status:
-      - kind get clusters | grep -q kind-task-cluster
+      - kind get clusters | grep -q {{.CONTEXT}}
 
   kind-set-context:
     cmds:
-      - kubectl config use-context kind-task-cluster
+      - kubectl config use-context {{.CONTEXT}}
     status:
-      - kubectl config get-contexts | grep kind-task-cluster | grep "[*]"
+      - kubectl config get-contexts | grep {{.CONTEXT}} | grep "[*]"
 
   clean:
     desc: "Cleanup kind cluster"
@@ -53,4 +53,4 @@ tasks:
 
   kind-delete-cluster:
     cmds:
-      - kind delete cluster --name kind-task-cluster
+      - kind delete cluster --name {{.CONTEXT}}
