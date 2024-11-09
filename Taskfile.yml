@@ -3,7 +3,7 @@
 version: '3'
 
 vars:
-  CLUSTER: '{{.CLUSTER | default "kind-task-cluster"}}'
+  CLUSTER: '{{.CLUSTER | default "kind-cluster"}}'
 
 tasks:
   default:
